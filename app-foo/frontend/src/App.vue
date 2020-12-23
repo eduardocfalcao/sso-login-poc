@@ -1,6 +1,34 @@
 <template>
   <div id="app">
-    @{{ user.username }} - {{ fullName }}
+    <div>
+      <h1>
+        @{{ user.username }} - {{ fullName }}
+      </h1>
+    </div>
+    <div>
+      <nav>
+        <router-link to="home" v-slot="{ href, navigate }">
+          <a 
+            :href="href"
+            @click="navigate"
+          >
+            Home
+          </a>
+        </router-link>
+
+        <router-link to="profile" v-slot="{ href, navigate }">
+          <a 
+            :href="href"
+            @click="navigate"
+          >
+            Profile
+          </a>
+        </router-link>
+      </nav>
+    </div>
+    <div>
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
@@ -32,5 +60,20 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+ul {
+  list-style: none;
+}
+
+nav a {
+  border: 1px solid rgba(67, 152, 250, 0.384);
+  background-color: rgba(67, 152, 250, 0.384);;
+  padding: 10px;
+  color: #fff;
+  text-decoration: none;
+}
+nav a:hover {
+  font-weight: bold;
 }
 </style>
