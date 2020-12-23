@@ -1,11 +1,6 @@
 <template>
   <div id="app">
     <div>
-      <h1>
-        @{{ user.username }} - {{ fullName }}
-      </h1>
-    </div>
-    <div>
       <nav>
         <router-link to="home" v-slot="{ href, navigate }">
           <a 
@@ -16,7 +11,7 @@
           </a>
         </router-link>
 
-        <router-link to="profile" v-slot="{ href, navigate }">
+        <router-link to="profile" v-slot="{ href, navigate }" v-if="!$auth.loading && $auth.isAuthenticated">
           <a 
             :href="href"
             @click="navigate"
@@ -24,8 +19,26 @@
             Profile
           </a>
         </router-link>
+
+
+          <a class="logout" v-if="!$auth.loading && !$auth.isAuthenticated"
+            @click="login"
+          >
+            Login
+          </a>
+
+          <a class="logout" v-if="!$auth.loading && $auth.isAuthenticated"
+            @click="logout"
+          >
+            Logout
+          </a>
       </nav>
     </div>
+    <div>
+      <h1>
+        Foo Application
+      </h1>
+    </div>    
     <div>
       <router-view></router-view>
     </div>
@@ -36,17 +49,15 @@
 
 export default {
   name: 'App',
-  data: () => ({
-    user: {
-      id: 1,
-      username: 'eduardocfalcao',
-      firstName: 'Luis Eduardo',
-      lastName: 'Falcao',
-    }
-  }),
-  computed: {
-    fullName() {
-      return `${this.user.firstName} ${this.user.lastName}`;
+  methods: {
+    async login() {
+      await this.$auth.loginWithRedirect();
+    },
+
+    logout() {
+      this.$auth.logout({
+        returnTo: window.location.origin
+      });
     }
   },
 }
@@ -67,13 +78,20 @@ ul {
 }
 
 nav a {
-  border: 1px solid rgba(67, 152, 250, 0.384);
   background-color: rgba(67, 152, 250, 0.384);;
   padding: 10px;
   color: #fff;
   text-decoration: none;
+  border-radius: 6px;
+  margin-left: 4px;
 }
 nav a:hover {
   font-weight: bold;
+}
+
+nav a.logout {
+  cursor: pointer;
+  background-color: #6c757d;
+  border:
 }
 </style>
