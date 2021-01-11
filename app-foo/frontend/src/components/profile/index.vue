@@ -12,7 +12,9 @@
                 </div>
 
                 <pre>{{ JSON.stringify($auth.user, null, 2) }}</pre>
-                
+
+                <h3>Token</h3>
+                <pre>{{ JSON.stringify(this.token, null, 2) }}</pre>
             </div>
         </section>
     </div>
@@ -22,6 +24,14 @@
 
 export default {
     name: 'Profile',
+    data() {
+        return {
+            token: null
+        }
+    },
+    async mounted() {
+        this.token = await this.$auth.getTokenSilently();
+    },
 }
 
 </script>

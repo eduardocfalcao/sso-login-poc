@@ -1,0 +1,4 @@
+{
+    "domain": "[YOUR_DOMAIN].us.auth0.com",
+    "clientId": "[YOUR_CLIENTID]"
+}

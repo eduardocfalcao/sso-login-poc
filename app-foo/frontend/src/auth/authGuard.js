@@ -3,8 +3,8 @@ import { getInstance } from './index';
 export const authGuard = (to, from, next) => {
     const authService = getInstance();
 
-    const fn = () => {
-        if (authService.isAuthenticated) {
+    const fn = async () => {
+        if (authService.isAuthenticated && await authService.isUserAuthenticated()) {
             return next();
         }
 
@@ -15,9 +15,9 @@ export const authGuard = (to, from, next) => {
         return fn();
     }
 
-    authService.$watch("loading", loading => {
+    authService.$watch("loading", async loading => {
         if (loading === false) {
-            return fn();
+            return await fn();
         }
     });
 }

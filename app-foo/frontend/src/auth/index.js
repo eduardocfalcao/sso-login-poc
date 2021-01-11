@@ -67,8 +67,8 @@ export const useAuth0 = ({
                 return this.auth0Client.getIdTokenClaims(o);
             },
             
-            getTokenSilenttly(o) {
-                return this.auth0Client.getTokenSilenttly(o);
+            getTokenSilently(o) {
+                return this.auth0Client.getTokenSilently(o);
             },
 
             getTokenWithPopup(o) {
@@ -78,13 +78,35 @@ export const useAuth0 = ({
             logout(o) {
                 return this.auth0Client.logout(o);
             },
+
+            async isUserAuthenticated() {
+                const isAuthenticated = await this.auth0Client.isAuthenticated();
+                if (isAuthenticated) {
+                    this.user = await this.auth0Client.getUser();
+                }
+                return isAuthenticated;
+            },
+
+            async checkSession() {
+                await this.auth0Client.checkSession();
+                this.isAuthenticated = await this.auth0Client.isAuthenticated();
+                if (this.isAuthenticated) {
+                    this.user = await this.auth0Client.getUser();
+                    this.loading = false;
+                } else {
+                    this.user = null;
+                    this.isAuthenticated = false;
+                    this.loading = false;
+                }
+            }
         },
 
         async created() {
             this.auth0Client = await createAuth0Client({
                 ...options,
                 client_id: options.client_id,
-                redirect_uri: redirectUri
+                redirect_uri: redirectUri,
+                useRefreshTokens: true
             });
 
             try {

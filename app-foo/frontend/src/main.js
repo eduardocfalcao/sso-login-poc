@@ -34,6 +34,10 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach( async (to, from, next) => {
+  next();
+})
+
 new Vue({
   router,
   render: h => h(App),

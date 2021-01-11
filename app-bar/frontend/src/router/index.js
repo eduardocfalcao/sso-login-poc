@@ -1,10 +1,9 @@
-import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { authGuard } from "@/auth/authGuard";
+import { getInstance } from '@/auth';
 import Home from '../views/Home.vue';
 import Profile from '../views/Profile.vue';
 
-Vue.use(VueRouter)
 
 const routes = [
   {
@@ -32,6 +31,13 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach( async (to, from, next) => {
+  var authService = getInstance();
+
+  await authService.VerifyAuthSession();
+  next();
 })
 
 export default router

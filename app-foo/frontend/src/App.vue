@@ -56,10 +56,13 @@ export default {
 
     logout() {
       this.$auth.logout({
-        returnTo: window.location.origin
+        returnTo: window.location.origin,
       });
     }
   },
+  async created() {
+    await this.$auth.checkSession();
+  }
 }
 </script>
 

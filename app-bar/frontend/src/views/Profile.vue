@@ -13,6 +13,11 @@
 
                 <pre>{{ JSON.stringify($auth.user, null, 2) }}</pre>
                 
+                <h3>Token</h3>
+                <pre>{{ JSON.stringify(this.token, null, 2) }}</pre>
+
+                <h3>Claims</h3>
+                <pre>{{ JSON.stringify(this.claims, null, 2) }}</pre>
             </div>
         </section>
     </div>
@@ -22,6 +27,16 @@
 
 export default {
     name: 'Profile',
+    data() {
+        return {
+            token: null,
+            claims: null,
+        }
+    },
+    async mounted() {
+        this.token = await this.$auth.getTokenSilently();
+        this.claims = await this.$auth.getIdTokenClaims();
+    },
 }
 
 </script>
